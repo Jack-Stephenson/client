@@ -14,19 +14,19 @@ const WeaponView = () => {
                 })
                 .catch(err => console.log(err))
         }, [])
-    // const submitHandler = e => {
-    //     e.preventDefault();
-    //     axios.post(`OUR MONGODB ADDRESS`, {
-    //         recipeName,
-    //         materialsObj
-    //     })
-    //         .then(res => {
-    //             console.log('Progress posted to our mongoDB')
-    //         })
-    //         .catch(err => {
-    //             console.log(err)
-    //         })
-    // }
+    const submitHandler = e => {
+        e.preventDefault();
+        axios.post(`http://localhost:8000/api/recipes`, {
+            recipeName,
+            materialsObj
+        })
+            .then(res => {
+                console.log('Progress posted to our mongoDB')
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
     const clickHandler = (equipment) => {
         setRecipeName(equipment.name)
         equipment.crafting.craftingMaterials.length ? setMaterialsObj(equipment.crafting.craftingMaterials) : setMaterialsObj(equipment.crafting.upgradeMaterials)
@@ -35,12 +35,12 @@ const WeaponView = () => {
     return (
         <div>
             <div>
-                <form>
+                <form onSubmit={submitHandler}>
                     <p>
                         <label htmlFor="">Search for your equipment:</label><br />
                         <input type="text" onChange={(e) => setSearch(e.target.value)} value={search} />
                     </p>
-                    <input type="submit" value="Search" />
+                    <input type="submit" value="Search"/>
                 </form>
             </div>
             <div>
