@@ -26,6 +26,9 @@ function App() {
           <Route exact path={'/armor/:armor_type'}>
             <ArmorView />
           </Route>
+          <Route exact path={'/:equipment'}>
+
+          </Route>
         </Switch>
       </div>
     </BrowserRouter>

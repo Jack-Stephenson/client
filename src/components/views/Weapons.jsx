@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import axios from 'axios'
 const WeaponView = () => {
     const [search, setSearch] = useState('')
@@ -7,13 +7,13 @@ const WeaponView = () => {
     const [materialsObj, setMaterialsObj] = useState({})
     const [equipment, setEquipment] = useState([])
     const { weapon_type } = useParams();
-        useEffect(() => {
-            axios.get(`https://mhw-db.com/weapons`)
-                .then(res => {
-                    setEquipment(res.data)
-                })
-                .catch(err => console.log(err))
-        }, [])
+    useEffect(() => {
+        axios.get(`https://mhw-db.com/weapons`)
+            .then(res => {
+                setEquipment(res.data)
+            })
+            .catch(err => console.log(err))
+    }, [])
     const submitHandler = e => {
         e.preventDefault();
         axios.post(`http://localhost:8000/api/recipes`, {
@@ -40,7 +40,19 @@ const WeaponView = () => {
                         <label htmlFor="">Search for your equipment:</label><br />
                         <input type="text" onChange={(e) => setSearch(e.target.value)} value={search} />
                     </p>
-                    <input type="submit" value="Search"/>
+                    {equipment.map((equipment, i) => {
+                        return (
+                            <div key={i}>
+                                {search === equipment.name && equipment.type === `${weapon_type}`
+                                    ? <Link to={`/${equipment.id}`}><input type="submit" value="Build" /></Link>
+                                    : <></>
+                                }
+                            </div>
+
+                        )
+
+                    })}
+
                 </form>
             </div>
             <div>
@@ -48,7 +60,7 @@ const WeaponView = () => {
                     return (
                         <div key={i}>
                             {
-                                equipment.name.toLowerCase().includes(search.toLowerCase()) && equipment.type === `${weapon_type}`
+                                equipment.name.toLowerCase().includes(search.toLowerCase()) && equipment.type === `${weapon_type}` && equipment.name !== search
                                     ? <button onClick={(e) => clickHandler(equipment)}>{equipment.name}</button>
                                     : <></>
                             }
